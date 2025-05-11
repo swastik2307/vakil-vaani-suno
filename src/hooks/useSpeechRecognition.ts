@@ -1,7 +1,6 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-
-type Language = 'en-US' | 'hi-IN';
+import { Language } from '@/types/chat';
 
 interface UseSpeechRecognitionProps {
   language: Language;
@@ -11,13 +10,15 @@ interface UseSpeechRecognitionProps {
 
 const useSpeechRecognition = ({ language, onResult, onEnd }: UseSpeechRecognitionProps) => {
   const [isListening, setIsListening] = useState(false);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  // Use any for now to avoid type errors
+  const recognitionRef = useRef<any>(null);
 
   const startListening = useCallback(() => {
     if (recognitionRef.current) {
       recognitionRef.current.abort();
     }
 
+    // Use window.SpeechRecognition or the webkit prefixed version
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
       console.error('Speech recognition not supported in this browser');
@@ -33,10 +34,10 @@ const useSpeechRecognition = ({ language, onResult, onEnd }: UseSpeechRecognitio
       setIsListening(true);
     };
 
-    recognition.onresult = (event) => {
+    recognition.onresult = (event: any) => {
       const transcript = Array.from(event.results)
-        .map(result => result[0])
-        .map(result => result.transcript)
+        .map((result: any) => result[0])
+        .map((result: any) => result.transcript)
         .join('');
       
       if (event.results[0].isFinal) {
@@ -49,7 +50,7 @@ const useSpeechRecognition = ({ language, onResult, onEnd }: UseSpeechRecognitio
       if (onEnd) onEnd();
     };
 
-    recognition.onerror = (event) => {
+    recognition.onerror = (event: any) => {
       console.error('Speech recognition error', event.error);
       setIsListening(false);
     };
