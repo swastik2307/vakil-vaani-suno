@@ -57,36 +57,37 @@ const legalResponses: Record<string, LegalResponse> = {
 
 export const getLegalResponse = (query: string, language: 'en-US' | 'hi-IN'): string => {
   const lang = language.startsWith('hi') ? 'hi' : 'en';
-  
-  // Expanded keyword matching for more legal categories
-  if (/consumer|refund|product|goods|service|purchase|warranty|shop/i.test(query)) {
+  const lowerCaseQuery = query.toLowerCase();
+
+  // Using more specific patterns with word boundaries for better matching
+  if (/\b(consumer|refund|product|goods|service|purchase|warranty|shop|buy|bought|defective|return)\b/i.test(lowerCaseQuery)) {
     return legalResponses.consumer[lang];
   } 
-  else if (/property|land|house|neighbor|boundary|rent|lease|real estate|tenant|landlord/i.test(query)) {
+  else if (/\b(property|land|house|neighbor|boundary|rent|lease|real estate|tenant|landlord|building|owner|flat|apartment)\b/i.test(lowerCaseQuery)) {
     return legalResponses.property[lang];
   }
-  else if (/job|work|employee|employer|salary|wage|termination|fired|workplace|discrimination|harassment/i.test(query)) {
+  else if (/\b(job|work|employee|employer|salary|wage|termination|fired|workplace|discrimination|harassment|office|company|business|resign|notice|boss)\b/i.test(lowerCaseQuery)) {
     return legalResponses.employment[lang];
   }
-  else if (/marriage|divorce|child|custody|adoption|alimony|maintenance|domestic violence|family|spouse/i.test(query)) {
+  else if (/\b(marriage|divorce|child|custody|adoption|alimony|maintenance|domestic violence|family|spouse|husband|wife|partner|married|wedding|separation)\b/i.test(lowerCaseQuery)) {
     return legalResponses.family[lang];
   }
-  else if (/crime|criminal|police|arrest|bail|fir|accused|theft|murder|assault|victim/i.test(query)) {
+  else if (/\b(crime|criminal|police|arrest|bail|fir|accused|theft|murder|assault|victim|jail|prison|court|investigation|case|lawyer|attorney|evidence|judge)\b/i.test(lowerCaseQuery)) {
     return legalResponses.criminal[lang];
   }
-  else if (/tax|income tax|gst|return|filing|exemption|deduction|audit|penalty/i.test(query)) {
+  else if (/\b(tax|income tax|gst|return|filing|exemption|deduction|audit|penalty|finances|money|payment|government|due|deadline)\b/i.test(lowerCaseQuery)) {
     return legalResponses.tax[lang];
   }
-  else if (/copyright|patent|trademark|intellectual property|invention|creative|author|artist/i.test(query)) {
+  else if (/\b(copyright|patent|trademark|intellectual property|invention|creative|author|artist|brand|logo|design|innovation|creator|rights)\b/i.test(lowerCaseQuery)) {
     return legalResponses.intellectual[lang];
   }
-  else if (/contract|agreement|breach|parties|clause|terms|conditions|sign|offer|acceptance|consideration/i.test(query)) {
+  else if (/\b(contract|agreement|breach|parties|clause|terms|conditions|sign|offer|acceptance|consideration|deal|promise|document|binding|legal|obligation)\b/i.test(lowerCaseQuery)) {
     return legalResponses.contract[lang];
   }
-  else if (/visa|passport|immigration|citizenship|foreigner|residency|oci|permanent|overseas/i.test(query)) {
+  else if (/\b(visa|passport|immigration|citizenship|foreigner|residency|oci|permanent|overseas|travel|abroad|foreign|country|nation|migrant|immigrant)\b/i.test(lowerCaseQuery)) {
     return legalResponses.immigration[lang];
   }
-  else if (/constitution|fundamental rights|supreme court|high court|writ|pil|government|state|freedom/i.test(query)) {
+  else if (/\b(constitution|fundamental rights|supreme court|high court|writ|pil|government|state|freedom|democracy|right|justice|petition|citizen|law)\b/i.test(lowerCaseQuery)) {
     return legalResponses.constitutional[lang];
   }
   
